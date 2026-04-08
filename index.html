@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Cookie | Fresh Cookie Delivery</title>
+  <style>
+    :root {
+      --cream: #fffaf1;
+      --cream-deep: #f4ead7;
+      --cream-soft: #fdf6ea;
+      --emerald: #0f7a5a;
+      --emerald-dark: #0b5c44;
+      --text: #24332d;
+      --muted: #66756f;
+      --white: #ffffff;
+      --border: rgba(15, 122, 90, 0.14);
+      --shadow: 0 18px 50px rgba(14, 66, 49, 0.08);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, var(--cream) 0%, #fffdf8 45%, var(--cream-soft) 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(92%, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(255, 250, 241, 0.82);
+      border-bottom: 1px solid rgba(15, 122, 90, 0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: var(--emerald-dark);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus {
+      color: var(--emerald);
+    }
+
+    .hero {
+      padding: 5.5rem 0 4.5rem;
+    }
+
+    .hero-card {
+      background: radial-gradient(circle at top right, rgba(15, 122, 90, 0.08), transparent 28%), var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 4rem;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 0.45rem 0.8rem;
+      background: rgba(15, 122, 90, 0.09);
+      color: var(--emerald-dark);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 56ch;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.95rem 1.35rem;
+      border-radius: 999px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--emerald);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--emerald-dark);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--emerald-dark);
+      border-color: rgba(15, 122, 90, 0.18);
+    }
+
+    .hero-badge-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .mini-card {
+      background: var(--cream-soft);
+      border: 1px solid rgba(15, 122, 90, 0.12);
+      border-radius: 20px;
+      padding: 1.25rem;
+    }
+
+    .mini-card strong {
+      display: block;
+      font-size: 1.4rem;
+      color: var(--emerald-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .mini-card span {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    section {
+      padding: 1.5rem 0 4.5rem;
+    }
+
+    .section-heading {
+      margin-bottom: 1.5rem;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      max-width: 60ch;
+    }
+
+    .about-card,
+    .contact-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .about-copy p + p {
+      margin-top: 1rem;
+    }
+
+    .highlights {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .highlight-item {
+      padding: 1rem 1.1rem;
+      background: var(--cream-soft);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(15, 122, 90, 0.1);
+    }
+
+    .highlight-item h3 {
+      font-size: 1rem;
+      margin-bottom: 0.35rem;
+      color: var(--emerald-dark);
+    }
+
+    .highlight-item p {
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      min-height: 260px;
+      border-radius: 22px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-label {
+      position: absolute;
+      left: 1rem;
+      bottom: 1rem;
+      background: rgba(255, 250, 241, 0.92);
+      color: var(--emerald-dark);
+      padding: 0.55rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 1.5rem;
+    }
+
+    .contact-info {
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+    }
+
+    .contact-info-block {
+      padding: 1rem 1.1rem;
+      background: var(--cream-soft);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(15, 122, 90, 0.1);
+    }
+
+    .contact-info-block h3 {
+      font-size: 1rem;
+      color: var(--emerald-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .contact-info-block p {
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    form {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 0.45rem;
+      color: var(--emerald-dark);
+      font-size: 0.95rem;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(15, 122, 90, 0.16);
+      background: #fffdf9;
+      border-radius: 14px;
+      padding: 0.95rem 1rem;
+      font: inherit;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--emerald);
+      box-shadow: 0 0 0 4px rgba(15, 122, 90, 0.08);
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .site-footer {
+      padding: 0 0 2.5rem;
+    }
+
+    .footer-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.2rem 1.4rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero-card,
+      .about-grid,
+      .contact-layout,
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card {
+        padding: 2rem;
+      }
+
+      .gallery-item {
+        min-height: 240px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 4rem;
+      }
+
+      .hero-card,
+      .about-card,
+      .contact-card {
+        padding: 1.35rem;
+        border-radius: 20px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#home" class="brand">Le Cookie</a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container">
+        <div class="hero-card">
+          <div>
+            <span class="eyebrow">Freshly baked, thoughtfully delivered</span>
+            <h1>Warm cookies delivered with a little extra joy.</h1>
+            <p>
+              Le Cookie is a freelance cookie delivery brand crafting small-batch treats with premium ingredients,
+              elegant presentation, and same-day local delivery for sweet moments big and small.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#contact">Place an Inquiry</a>
+              <a class="btn btn-secondary" href="#gallery">View Gallery</a>
+            </div>
+          </div>
+
+          <div class="hero-badge-grid" aria-label="Highlights">
+            <div class="mini-card">
+              <strong>Small Batch</strong>
+              <span>Baked with care for freshness, texture, and flavor.</span>
+            </div>
+            <div class="mini-card">
+              <strong>Local Delivery</strong>
+              <span>Perfect for gifts, parties, office drops, and late-night cravings.</span>
+            </div>
+            <div class="mini-card">
+              <strong>Elegant Packaging</strong>
+              <span>Simple, modern presentation with a boutique feel.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-heading">
+          <h2>About Me</h2>
+          <p>
+            The heart behind Le Cookie is a love for homemade desserts, thoughtful details, and making delivery feel personal.
+          </p>
+        </div>
+
+        <div class="about-card about-grid">
+          <div class="about-copy">
+            <p>
+              Hi, I’m the founder of Le Cookie — a freelance cookie delivery service focused on creating warm, beautiful,
+              crave-worthy treats for everyday celebrations. Every batch is made with a minimalist approach: quality ingredients,
+              balanced flavors, and presentation that feels special from the first glance to the final bite.
+            </p>
+            <p>
+              Whether it’s a gift box for a friend, dessert for a small event, or a weekly cookie fix, Le Cookie is built around
+              simple ordering, reliable local delivery, and handmade care in every order.
+            </p>
+          </div>
+
+          <div class="highlights">
+            <div class="highlight-item">
+              <h3>Signature Style</h3>
+              <p>Soft centers, golden edges, and a clean, modern brand experience.</p>
+            </div>
+            <div class="highlight-item">
+              <h3>Made for Moments</h3>
+              <p>From cozy nights in to client gifts and party tables, cookies that fit the occasion.</p>
+            </div>
+            <div class="highlight-item">
+              <h3>Personal Service</h3>
+              <p>Friendly communication, flexible requests, and attention to delivery details.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Photo Gallery</h2>
+          <p>
+            Placeholder imagery for featured cookies, packaging, and delivery moments. Swap these with your own brand photos anytime.
+          </p>
+        </div>
+
+        <div class="gallery-grid">
+          <figure class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=80" alt="Placeholder image of stacked cookies on a plate" />
+            <figcaption class="gallery-label">Classic Chocolate Chip</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=900&q=80" alt="Placeholder image of cookies styled for a gift box" />
+            <figcaption class="gallery-label">Gift Box Packaging</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=900&q=80" alt="Placeholder image of fresh cookies and milk" />
+            <figcaption class="gallery-label">Fresh Delivery Ready</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Contact</h2>
+          <p>
+            Reach out for delivery inquiries, custom orders, collaborations, or event dessert requests.
+          </p>
+        </div>
+
+        <div class="contact-card contact-layout">
+          <div class="contact-info">
+            <div class="contact-info-block">
+              <h3>Order Inquiries</h3>
+              <p>Ask about flavors, delivery windows, quantity options, and special requests.</p>
+            </div>
+            <div class="contact-info-block">
+              <h3>Custom Requests</h3>
+              <p>Need cookies for a party, client gift, or styled occasion? Send the details here.</p>
+            </div>
+            <div class="contact-info-block">
+              <h3>Response Time</h3>
+              <p>Typical replies can be made within one business day depending on order volume.</p>
+            </div>
+          </div>
+
+          <form action="#" method="post">
+            <div class="form-row">
+              <div>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required />
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required />
+              </div>
+            </div>
+
+            <div>
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" name="subject" placeholder="Order inquiry" />
+            </div>
+
+            <div>
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell me about your cookie order, delivery date, or event details."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-card">
+        © 2026 Le Cookie — Freelance Cookie Delivery
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
