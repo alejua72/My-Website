@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Le Cookie — Artisan Cookie Delivery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --cream-100: #fdf8f0;
+      --cream-200: #f7edd8;
+      --cream-300: #eedfc0;
+      --emerald:   #1a6b4a;
+      --emerald-lt:#2d8f63;
+      --emerald-dk:#134d36;
+      --ink:       #1c1c1a;
+      --muted:     #6b6659;
+      --border:    #e0d4bc;
+
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'DM Sans', sans-serif;
+      --font-cursive: 'Great Vibes', cursive;
+
+      --radius: 2px;
+      --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* ── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream-100);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    img { display: block; width: 100%; }
+    a  { color: inherit; text-decoration: none; }
+
+    /* ── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 4rem;
+      background: rgba(253, 248, 240, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color var(--transition);
+    }
+    nav.scrolled { border-bottom-color: var(--border); }
+
+    .nav-logo {
+      font-family: var(--font-cursive);
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--emerald-dk);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--emerald); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--ink);
+      transition: var(--transition);
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile nav drawer */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: var(--cream-100);
+      border-bottom: 1px solid var(--border);
+      z-index: 99;
+      padding: 1.5rem 2rem;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── HERO ───────────────────────────────────────────────── */
+    #hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 4rem;
+      gap: 4rem;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle grain texture overlay */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* large decorative circle */
+    #hero::after {
+      content: '';
+      position: absolute;
+      right: -10vw;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 55vw;
+      height: 55vw;
+      border-radius: 50%;
+      background: var(--cream-200);
+      z-index: 0;
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.9s ease both;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--emerald);
+      margin-bottom: 1.25rem;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 7vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--emerald);
+    }
+    .hero-tagline {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 380px;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      background: var(--emerald);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
+      border-radius: var(--radius);
+    }
+    .btn:hover {
+      background: var(--emerald-dk);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--emerald);
+      border: 1.5px solid var(--emerald);
+      margin-left: 1rem;
+    }
+    .btn-outline:hover {
+      background: var(--emerald);
+      color: #fff;
+    }
+
+    .hero-image-wrap {
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.9s 0.2s ease both;
+    }
+    .hero-image-wrap .img-frame {
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+      box-shadow: 0 30px 80px rgba(26, 107, 74, 0.12);
+    }
+    .hero-image-wrap .img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    /* floating badge */
+    .hero-badge {
+      position: absolute;
+      bottom: 2rem;
+      left: -2rem;
+      background: var(--emerald);
+      color: #fff;
+      border-radius: 50%;
+      width: 110px;
+      height: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+      box-shadow: 0 8px 24px rgba(26,107,74,0.25);
+      animation: spin 18s linear infinite;
+    }
+    .hero-badge span {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    /* ── ABOUT ──────────────────────────────────────────────── */
+    #about {
+      padding: 7rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      background: var(--cream-200);
+      position: relative;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--emerald);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--emerald);
+    }
+    .about-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+    .about-heading em { font-style: italic; color: var(--emerald); }
+    .about-body p {
+      color: var(--muted);
+      font-size: 0.97rem;
+      margin-bottom: 1rem;
+      line-height: 1.85;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.6rem;
+      font-weight: 300;
+      color: var(--emerald);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    /* about image mosaic */
+    .about-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 0.75rem;
+      height: 520px;
+    }
+    .about-visual .av-main {
+      grid-row: 1 / 3;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .about-visual .av-side {
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .about-visual img {
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ── GALLERY ────────────────────────────────────────────── */
+    #gallery {
+      padding: 7rem 4rem;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .section-header .section-label { justify-content: center; }
+    .section-header .section-label::before { display: none; }
+    .gallery-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 300;
+    }
+    .gallery-title em { font-style: italic; color: var(--emerald); }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 0.75rem;
+    }
+    .gallery-item {
+      overflow: hidden;
+      border-radius: 3px;
+      background: var(--cream-300);
+      position: relative;
+    }
+    .gallery-item::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.25rem;
+      background: linear-gradient(transparent, rgba(26,107,74,0.6));
+      color: #fff;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .gallery-item:hover::after { opacity: 1; }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.04); }
+
+    .gi-1 { grid-column: 1 / 6;  grid-row: 1; aspect-ratio: 4/3; }
+    .gi-2 { grid-column: 6 / 9;  grid-row: 1; aspect-ratio: 3/4; }
+    .gi-3 { grid-column: 9 / 13; grid-row: 1; aspect-ratio: 4/3; }
+    .gi-4 { grid-column: 1 / 4;  grid-row: 2; aspect-ratio: 3/4; }
+    .gi-5 { grid-column: 4 / 9;  grid-row: 2; aspect-ratio: 4/3; }
+    .gi-6 { grid-column: 9 / 13; grid-row: 2; aspect-ratio: 3/4; }
+
+    /* ── CONTACT ────────────────────────────────────────────── */
+    #contact {
+      padding: 7rem 4rem;
+      background: var(--emerald-dk);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    #contact::before {
+      content: 'Le Cookie';
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: 18vw;
+      font-weight: 600;
+      color: rgba(255,255,255,0.04);
+      bottom: -2vw;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: -0.02em;
+    }
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+    .contact-info .section-label { color: var(--cream-300); }
+    .contact-info .section-label::before { background: var(--cream-300); }
+    .contact-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+    .contact-heading em { font-style: italic; color: var(--cream-300); }
+    .contact-details {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .contact-details p {
+      font-size: 0.88rem;
+      opacity: 0.75;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .contact-details strong { opacity: 1; color: var(--cream-300); font-weight: 400; }
+
+    /* Form */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .field label {
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius);
+      padding: 0.8rem 1rem;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color var(--transition), background var(--transition);
+      width: 100%;
+      -webkit-appearance: none;
+    }
+    .field input::placeholder,
+    .field textarea::placeholder { color: rgba(255,255,255,0.3); }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.11);
+    }
+    .field textarea { resize: vertical; min-height: 130px; }
+    .field select option { background: var(--emerald-dk); color: #fff; }
+
+    .btn-submit {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: var(--cream-200);
+      color: var(--emerald-dk);
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: background var(--transition), transform var(--transition);
+      align-self: flex-start;
+      font-weight: 500;
+    }
+    .btn-submit:hover {
+      background: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      background: var(--emerald-dk);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: rgba(255,255,255,0.45);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+    }
+    .footer-logo {
+      font-family: var(--font-cursive);
+      font-size: 1.7rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.7);
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .footer-links a { color: rgba(255,255,255,0.4); transition: color var(--transition); }
+    .footer-links a:hover { color: rgba(255,255,255,0.85); }
+
+    /* ── ANIMATIONS ─────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Scroll-reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      nav { padding: 1.25rem 2.5rem; }
+      #hero { padding: 5rem 2.5rem 4rem; gap: 3rem; }
+      #about { padding: 5rem 2.5rem; gap: 3rem; }
+      #gallery { padding: 5rem 2.5rem; }
+      #contact { padding: 5rem 2.5rem; }
+      footer { padding: 2rem 2.5rem; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      #hero {
+        grid-template-columns: 1fr;
+        padding: 6rem 1.5rem 4rem;
+        text-align: center;
+        min-height: auto;
+      }
+      #hero::after { display: none; }
+      .hero-tagline { margin: 0 auto 2.5rem; }
+      .hero-image-wrap { order: -1; max-width: 340px; margin: 0 auto; }
+      .hero-badge { left: 0; }
+
+      #about {
+        grid-template-columns: 1fr;
+        padding: 4rem 1.5rem;
+        gap: 3rem;
+      }
+      .about-visual {
+        height: 340px;
+        order: -1;
+      }
+      .about-stats { grid-template-columns: repeat(3, 1fr); }
+
+      #gallery { padding: 4rem 1.5rem; }
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+      }
+      .gi-1, .gi-2, .gi-3,
+      .gi-4, .gi-5, .gi-6 {
+        grid-column: auto;
+        grid-row: auto;
+        aspect-ratio: 1;
+      }
+
+      #contact { padding: 4rem 1.5rem; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .form-row { grid-template-columns: 1fr; }
+
+      footer {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem;
+        text-align: center;
+      }
+    }
+
+    /* ── REVIEWS ────────────────────────────────────────────── */
+    #reviews {
+      padding: 7rem 4rem;
+      background: var(--cream-100);
+    }
+    .reviews-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    .reviews-header .section-label { justify-content: center; }
+    .reviews-header .section-label::before { display: none; }
+    .reviews-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 300;
+      line-height: 1.2;
+    }
+    .reviews-title em { font-style: italic; color: var(--emerald); }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .review-card {
+      background: var(--cream-200);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2.5rem 2rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .review-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(26, 107, 74, 0.1);
+    }
+    .review-quote-mark {
+      font-family: var(--font-display);
+      font-size: 5rem;
+      line-height: 0.6;
+      color: var(--emerald);
+      opacity: 0.25;
+      position: absolute;
+      top: 1.5rem;
+      left: 1.75rem;
+      pointer-events: none;
+      user-select: none;
+    }
+    .review-stars {
+      display: flex;
+      gap: 3px;
+      color: var(--emerald);
+      font-size: 0.85rem;
+    }
+    .review-text {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      font-style: italic;
+      padding-top: 0.5rem;
+    }
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-top: auto;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .review-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--cream-300);
+    }
+    .review-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .review-name {
+      font-family: var(--font-cursive);
+      font-size: 1.3rem;
+      color: var(--emerald-dk);
+      line-height: 1;
+    }
+    .review-detail {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.7;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 900px) {
+      .reviews-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+    }
+    @media (max-width: 768px) {
+      #reviews { padding: 4rem 1.5rem; }
+    }
+
+    
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gi-1, .gi-2, .gi-3,
+      .gi-4, .gi-5, .gi-6 { aspect-ratio: 4/3; }
+      .btn-outline { margin-left: 0; margin-top: 0.75rem; display: block; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav id="navbar">
+    <div class="nav-logo">Le Cookie</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#gallery">Menu</a></li>
+      <li><a href="#contact">Order</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#about"   onclick="closeMenu()">About</a>
+    <a href="#gallery" onclick="closeMenu()">Menu</a>
+    <a href="#contact" onclick="closeMenu()">Order</a>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Artisan · Handcrafted · Delivered</p>
+      <h1 class="hero-title">Baked with<br><em>love,</em><br>delivered<br>fresh.</h1>
+      <p class="hero-tagline">Small-batch cookies made from scratch, delivered straight to your door — because every moment deserves something sweet.</p>
+      <a href="#contact" class="btn">Place an Order</a>
+      <a href="#gallery" class="btn btn-outline">See the Menu</a>
+    </div>
+
+    <div class="hero-image-wrap">
+      <div class="img-frame">
+        <img
+          src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800&auto=format&fit=crop"
+          alt="Artisan cookies on a marble surface"
+        />
+      </div>
+      <div class="hero-badge">
+        <span>Fresh<br>Daily<br>Baked</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section id="about">
+    <div class="about-body reveal">
+      <p class="section-label">Our Story</p>
+      <h2 class="about-heading">Made from<br><em>scratch,</em><br>with care.</h2>
+      <p>Hi, I'm Léa — the baker, delivery driver, and obsessive recipe tester behind Le Cookie. What started as weekend experiments in my tiny kitchen has grown into something I'm incredibly proud of.</p>
+      <p>Every batch is made to order using locally sourced butter, single-origin chocolate, and a whole lot of patience. No shortcuts, no preservatives — just honest, deeply satisfying cookies.</p>
+      <p>I believe dessert is an act of love. Whether you're treating yourself or gifting someone special, I put that same care into every single cookie.</p>
+
+      <div class="about-stats">
+        <div>
+          <div class="stat-num">12+</div>
+          <div class="stat-label">Signature flavors</div>
+        </div>
+        <div>
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Happy customers</div>
+        </div>
+        <div>
+          <div class="stat-num">3yr</div>
+          <div class="stat-label">Baking & delivering</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-visual reveal">
+      <div class="av-main">
+        <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=600&auto=format&fit=crop" alt="Baker shaping cookies"/>
+      </div>
+      <div class="av-side">
+        <img src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400&auto=format&fit=crop" alt="Cookie ingredients"/>
+      </div>
+      <div class="av-side">
+        <img src="https://images.unsplash.com/photo-1490323914169-4b57e4751cd6?w=400&auto=format&fit=crop" alt="Packaged cookies"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GALLERY ── -->
+  <section id="gallery">
+    <div class="section-header reveal">
+      <p class="section-label">Our Menu</p>
+      <h2 class="gallery-title">Cookie <em>creations</em></h2>
+    </div>
+
+    <div class="gallery-grid reveal">
+      <div class="gallery-item gi-1" data-label="Classic Chocolate Chip">
+        <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=700&auto=format&fit=crop" alt="Chocolate chip cookies"/>
+      </div>
+      <div class="gallery-item gi-2" data-label="Brown Butter Snickerdoodle">
+        <img src="https://images.unsplash.com/photo-1509365465985-25d11c17e812?w=500&auto=format&fit=crop" alt="Snickerdoodle cookies"/>
+      </div>
+      <div class="gallery-item gi-3" data-label="Dark Chocolate Sea Salt">
+        <img src="https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=600&auto=format&fit=crop" alt="Dark chocolate cookies"/>
+      </div>
+      <div class="gallery-item gi-4" data-label="Pistachio Cardamom">
+        <img src="https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?w=500&auto=format&fit=crop" alt="Pistachio cookies"/>
+      </div>
+      <div class="gallery-item gi-5" data-label="Lemon Lavender Shortbread">
+        <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=700&auto=format&fit=crop" alt="Shortbread cookies"/>
+      </div>
+      <div class="gallery-item gi-6" data-label="Seasonal Special">
+        <img src="https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=500&auto=format&fit=crop" alt="Seasonal cookies"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="contact-info reveal">
+        <p class="section-label">Get in Touch</p>
+        <h2 class="contact-heading">Let's make<br>something <em>sweet</em><br>together.</h2>
+        <p style="opacity:0.65; font-size:0.9rem; line-height:1.8; margin-top:1rem;">Orders are fulfilled Tuesday through Sunday. Please place orders at least 48 hours in advance. Delivery available within a 15-mile radius.</p>
+
+        <div class="contact-details">
+          <p><strong>Email</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="39515c55555679555c5a565652505c175a56">[email&#160;protected]</a></p>
+          <p><strong>Phone</strong> (512) 555-0192</p>
+          <p><strong>Hours</strong> Tue – Sun, 9am – 6pm</p>
+          <p><strong>Area</strong> Arlington, TX + surroundings</p>
+        </div>
+      </div>
+
+      <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="field">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" placeholder="Léa" required />
+          </div>
+          <div class="field">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" placeholder="Dupont" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" required />
+        </div>
+        <div class="field">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="(512) 555-0000" />
+        </div>
+        <div class="field">
+          <label for="flavor">Preferred Flavor</label>
+          <select id="flavor">
+            <option value="">Select a flavor…</option>
+            <option>Classic Chocolate Chip</option>
+            <option>Brown Butter Snickerdoodle</option>
+            <option>Dark Chocolate Sea Salt</option>
+            <option>Pistachio Cardamom</option>
+            <option>Lemon Lavender Shortbread</option>
+            <option>Surprise Me!</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="message">Message / Special Requests</label>
+          <textarea id="message" placeholder="Tell me about your order — quantity, occasion, dietary needs…"></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Send My Order →</button>
+        <p id="form-success" style="display:none; color:var(--cream-300); font-size:0.85rem; margin-top:0.5rem;">✓ Thank you! I'll be in touch within 24 hours.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ── REVIEWS ── -->
+  <section id="reviews">
+    <div class="reviews-header reveal">
+      <p class="section-label">Kind Words</p>
+      <h2 class="reviews-title">What our customers <em>say</em></h2>
+    </div>
+
+    <div class="reviews-grid">
+
+      <div class="review-card reveal">
+        <div class="review-quote-mark">"</div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">I ordered a dozen of the Dark Chocolate Sea Salt cookies for my sister's birthday and they were absolutely divine. Perfectly crisp on the edges, gooey in the center — and delivered right on time with the sweetest little note. Le Cookie is the only bakery I'll ever need.</p>
+        <div class="review-author">
+          <div class="review-avatar">
+            <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=100&auto=format&fit=crop&crop=face" alt="Sophie M."/>
+          </div>
+          <div>
+            <div class="review-name">Sophie M.</div>
+            <div class="review-detail">Chocolate Chip Devotee · Arlington, TX</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-quote-mark">"</div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">The Pistachio Cardamom cookies were a revelation — I'd never had anything quite like them. Léa clearly puts so much thought into her flavor combinations. I've already placed three orders this month and I have absolutely zero regrets. Pure, unapologetic joy in every bite.</p>
+        <div class="review-author">
+          <div class="review-avatar">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&crop=face" alt="Marcus T."/>
+          </div>
+          <div>
+            <div class="review-name">Marcus T.</div>
+            <div class="review-detail">Repeat Customer · Grand Prairie, TX</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-quote-mark">"</div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">I asked Léa to create a custom assortment for my team's end-of-year celebration and she went completely above and beyond. Beautiful packaging, incredible taste, and everyone kept asking where they came from. Le Cookie has earned a permanent spot in our office treat rotation!</p>
+        <div class="review-author">
+          <div class="review-avatar">
+            <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&auto=format&fit=crop&crop=face" alt="Priya K."/>
+          </div>
+          <div>
+            <div class="review-name">Priya K.</div>
+            <div class="review-detail">Corporate Order · Fort Worth, TX</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-logo">Le Cookie</div>
+    <span>© 2026 Le Cookie. All rights reserved.</span>
+    <ul class="footer-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#gallery">Menu</a></li>
+      <li><a href="#contact">Order</a></li>
+    </ul>
+  </footer>
+
+  <!-- ── JS ── -->
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Nav scroll class
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      mobileNav.classList.remove('open');
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          e.target.style.transitionDelay = (i % 3) * 0.1 + 's';
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(e
